@@ -1,8 +1,8 @@
-defmodule Oantagonista2Test do
+defmodule OAntagonista2Test do
   use ExUnit.Case
-  doctest Oantagonista2
+  doctest OAntagonista2
 
   test "greets the world" do
-    assert Oantagonista2.hello() == :world
+    assert OAntagonista2.hello() == :world
   end
 end

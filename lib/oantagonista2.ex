@@ -1,4 +1,4 @@
-defmodule Oantagonista2 do
+defmodule OAntagonista2 do
   @moduledoc """
   Documentation for Oantagonista2.
   """
@@ -8,7 +8,7 @@ defmodule Oantagonista2 do
 
   ## Examples
 
-      iex> Oantagonista2.hello()
+      iex> OAntagonista2.hello()
       :world
 
   """
