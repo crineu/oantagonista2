@@ -1,6 +1,6 @@
 # Oantagonista2
 
-**TODO: Add description**
+Same as `oantagonista`, but now in Elixir
 
 ## Installation
 
