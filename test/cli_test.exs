@@ -14,7 +14,7 @@ defmodule CliTest do
   end
 
   test "news_count is defaulted if one value given" do
-    assert parse_args(["2"]) == { 2, Anta.CLI.default_news }
+    assert parse_args(["2"]) == { 2, Anta.CLI.default_count }
   end
 
 end

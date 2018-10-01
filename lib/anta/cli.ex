@@ -1,23 +1,25 @@
 defmodule Anta.CLI do
-  @default_news 6
+  @default_count 6
 
   @moduledoc """
   Handle the command line parsing and the dispatch to
   the various functions that end up generating a
   list with the last _n_ news published
   """
-  
+
   def run(argv) do
-    parse_args(argv)
+    argv
+      |> parse_args
+      |> process
   end
 
-  def default_news, do: @default_news
+  def default_count, do: @default_count
 
   @doc """
   `argv` can be -h or --help, which returns :help
 
-  Otherwise it is a page number, and (optionally) the number of 
-  entries to format (defaults to @default_news)
+  Otherwise it is a page number, and (optionally) the number of
+  entries to format (defaults to @default_count)
 
   Return a tuple `{ page_number, news_count }` or `:help`
   """
@@ -30,9 +32,25 @@ defmodule Anta.CLI do
       { _, [ page_number, news_count ], _ } -> { String.to_integer(page_number),
                                                  String.to_integer(news_count) }
       { _, [ page_number ], _ }             -> { String.to_integer(page_number),
-                                                 @default_news }
+                                                 @default_count }
       _ -> :help
     end
   end
 
-end 
+
+  @doc """
+  Returns the `--help` text that will be printed in scree
+  """
+  def process(:help) do
+    IO.puts """
+    usage: anta <page_number> [ <news_count> | #{@default_count} ]
+    """
+    System.stop(0)
+  end
+
+  def process({ page_number, _count }) do
+    Anta.Site.fetch(page_number)
+  end
+
+
+end
