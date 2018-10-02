@@ -24,12 +24,10 @@ defmodule Anta.Parser do
     map = html_page
       |> Floki.parse
       |> Floki.find("article")
-      |> Enum.map(&to_map/1)
-    require IEx
-    IEx.pry
+      |> Enum.map(&to_list/1)
   end
 
-  def to_map(article) do
+  def to_list(article) do
     [path]  = Floki.attribute(article, "div a",           "data-link")
     [title] = Floki.attribute(article, "div a",           "data-title")
     [date]  = Floki.attribute(article, "div a span time", "datetime")
