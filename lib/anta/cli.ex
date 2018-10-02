@@ -48,8 +48,21 @@ defmodule Anta.CLI do
     System.stop(0)
   end
 
-  def process({ page_number, _count }) do
-    Anta.Site.fetch(page_number)
+  def process({ page_number, count }) do
+    { page_number, count }
+      |> Anta.Fetcher.fetch_news_list
+      |> decode_response
+      |> Anta.Parser.parse_news_list
+  end
+
+  @doc """
+  Halts the system if response not :ok
+  """
+  def decode_response({ :ok, body }), do: body
+  def decode_response({ :error, error }) do
+    {_, message} = List.keyfind(error, "message", 0)
+    IO.puts "Error fetching from AntaNews: #{message}"
+    System.stop(0)
   end
 
 
