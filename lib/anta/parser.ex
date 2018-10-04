@@ -13,7 +13,7 @@ defmodule Anta.Parser do
        next if article.at_xpath('./div/a/@data-link').nil?   # remove falsas notícias
        data = {}
        data[:full_path]  = article.at_xpath('./div/a/@data-link').value
-       data[:local_path] = 'api/v1/' + data[:full_path].split('gonista.com/').last
+       data[:local_path] = data[:full_path].split('gonista.com/').last
        data[:title]      = article.at_xpath('./div/a/@data-title').value
        data[:date]       = article.at_xpath('./div/a/span/time/@datetime').value
        list << data
@@ -21,7 +21,7 @@ defmodule Anta.Parser do
      list.reverse  # older up, newer at bottom
   """
   def parse_news_list(html_page) do
-    map = html_page
+    html_page
       |> Floki.parse
       |> Floki.find("article")
       |> Enum.map(&to_list/1)
@@ -50,8 +50,15 @@ defmodule Anta.Parser do
       .map(&:to_xml)                                        # transforma em xml
       .join
   """
-  def parse_news_single(html_page) do
+  def parse_single_news(html_page) do
+    entry = html_page
+      |> Floki.parse
+      |> Floki.find("#entry-text-post")
 
+    case entry do
+      [{_tag_name, _attributes, children_nodes}] -> Floki.raw_html(children_nodes)
+      [] -> []
+    end
   end
 
 
