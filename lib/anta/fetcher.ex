@@ -4,6 +4,7 @@ defmodule Anta.Fetcher do
     {'Content-type', 'text/html; charset=UTF-8'}
   ]
   @url 'https://www.oantagonista.com/'
+  @options [{:body_format, :binary}]  # needed for ISO-8859-1 chars!
 
 
   @moduledoc """
@@ -28,6 +29,7 @@ defmodule Anta.Fetcher do
     # to_do
   end
 
+
   @doc """
   Returns the url to the news list
   """
@@ -42,6 +44,7 @@ defmodule Anta.Fetcher do
     @url ++ category ++ '/' ++ unique_name
   end
 
+
   @doc """
   # First, we should start `inets` application - `httpc` is part of it:
   Application.ensure_all_started(:inets)
@@ -51,6 +54,9 @@ defmodule Anta.Fetcher do
   link = 'https://www.oantagonista.com/brasil/primo-de-richa-pede-liberdade-gilmar/'
   request = {link, @headers}
 
+  # options NECESSARY because :body_format defaults to :string = DO NOT WORK WITH CP1252
+  options = [{:body_format, :binary}]
+
   Example:
   {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = :httpc.request(:get, request, [], [])
   """
@@ -58,7 +64,7 @@ defmodule Anta.Fetcher do
     Application.ensure_all_started(:inets)
     Application.ensure_all_started(:ssl)
 
-    :httpc.request(:get, {url, @headers}, [], [])
+    :httpc.request(:get, {url, @headers}, [], @options)
   end
 
 
