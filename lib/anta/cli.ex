@@ -53,6 +53,7 @@ defmodule Anta.CLI do
       |> Anta.Fetcher.fetch_news_list
       |> decode_response
       |> Anta.Parser.parse_news_list
+      |> Anta.Formatter.to_screen
   end
 
   @doc """

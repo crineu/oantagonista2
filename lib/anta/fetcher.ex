@@ -3,8 +3,8 @@ defmodule Anta.Fetcher do
     {'User-agent',   'Elixir dave@pragprog.com'},
     {'Content-type', 'text/html; charset=UTF-8'}
   ]
-  @url 'https://www.oantagonista.com/'
-  @options [{:body_format, :binary}]  # needed for ISO-8859-1 chars!
+  @hostname 'https://www.oantagonista.com/'
+  @options  [{:body_format, :binary}]  # needed for ISO-8859-1 chars!
 
 
   @moduledoc """
@@ -25,8 +25,8 @@ defmodule Anta.Fetcher do
   @doc """
   Fetch single news page and transforms into a string with the content (in html)
   """
-  def fetch_single_news({ category, unique_name }) do
-    # to_do
+  def fetch_single_news(path) do
+    [category, unique_name] = String.split(path, "/", trim: true)
   end
 
 
@@ -34,14 +34,14 @@ defmodule Anta.Fetcher do
   Returns the url to the news list
   """
   def to_news_list_url(page_number \\ 1) when is_integer(page_number) do
-    @url ++ 'pagina/' ++ Integer.to_charlist(page_number)
+    @hostname ++ 'pagina/' ++ Integer.to_charlist(page_number)
   end
 
   @doc """
   Returns the url of the single news
   """
   def to_singe_news_url(category, unique_name) do
-    @url ++ category ++ '/' ++ unique_name
+    @hostname ++ category ++ '/' ++ unique_name
   end
 
 
@@ -61,9 +61,6 @@ defmodule Anta.Fetcher do
   {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = :httpc.request(:get, request, [], [])
   """
   def request(url) do
-    Application.ensure_all_started(:inets)
-    Application.ensure_all_started(:ssl)
-
     :httpc.request(:get, {url, @headers}, [], @options)
   end
 
