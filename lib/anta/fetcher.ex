@@ -1,4 +1,6 @@
 defmodule Anta.Fetcher do
+  require Logger
+
   @headers [
     {'User-agent',   'Elixir dave@pragprog.com'},
     {'Content-type', 'text/html; charset=UTF-8'}
@@ -67,9 +69,11 @@ defmodule Anta.Fetcher do
 
 
   def handle_response({:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}}) do
+    Logger.info "Sucessful response..."
     {:ok, body}
   end
   def handle_response({:error, {_, _, body}}) do
+    Logger.error "Network error response..."
     {:error, body}
   end
 

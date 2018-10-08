@@ -12,6 +12,7 @@ use Mix.Config
 #
 #     config :oantagonista2, key: :value
   config :oantagonista2, anta_url: 'https://www.oantagonista.com'
+  config :logger, compile_time_purge_level: :info
 #
 # and access this configuration in your application as:
 #

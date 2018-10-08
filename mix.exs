@@ -26,4 +26,8 @@ defmodule Oantagonista2.MixProject do
       {:floki, "~> 0.20.0"}
     ]
   end
+
+  defp escript_config do
+    [ main_module: Anta.CLI ]
+  end
 end

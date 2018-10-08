@@ -1,4 +1,6 @@
 defmodule Anta.CLI do
+  require Logger
+
   @default_count 6
 
   @moduledoc """
@@ -7,7 +9,7 @@ defmodule Anta.CLI do
   list with the last _n_ news published
   """
 
-  def run(argv) do
+  def main(argv) do
     argv
       |> parse_args
       |> process
@@ -49,6 +51,7 @@ defmodule Anta.CLI do
   end
 
   def process({ page_number, count }) do
+    Logger.info "OAntagnoista2 fetching page #{page_number}"
     { page_number, count }
       |> Anta.Fetcher.fetch_news_list
       |> decode_response
@@ -62,7 +65,7 @@ defmodule Anta.CLI do
   def decode_response({ :ok, body }), do: body
   def decode_response({ :error, error }) do
     {_, message} = List.keyfind(error, "message", 0)
-    IO.puts "Error fetching from AntaNews: #{message}"
+    Logger.error "Error fetching from AntaNews: #{message}"
     System.stop(0)
   end
 
