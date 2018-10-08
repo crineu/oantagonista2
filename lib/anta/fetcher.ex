@@ -48,19 +48,20 @@ defmodule Anta.Fetcher do
 
 
   @doc """
-  # First, we should start `inets` application - `httpc` is part of it:
-  Application.ensure_all_started(:inets)
-  # We should start `ssl` application also, if we want to make secure requests (https):
-  Application.ensure_all_started(:ssl)
+  We should start `inets` application - `httpc` is part of it;
+  We should start `ssl` also, if we want to make secure requests (https):
+      Application.ensure_all_started(:inets)
+      Application.ensure_all_started(:ssl)
 
-  link = 'https://www.oantagonista.com/brasil/primo-de-richa-pede-liberdade-gilmar/'
-  request = {link, @headers}
+  Sample code:
+      link = 'https://www.oantagonista.com/brasil/primo-de-richa-pede-liberdade-gilmar/'
+      request = {link, @headers}
 
-  # options NECESSARY because :body_format defaults to :string = DO NOT WORK WITH CP1252
-  options = [{:body_format, :binary}]
+      # options NECESSARY because :body_format defaults to :string = DO NOT WORK WITH CP1252
+      options = [{:body_format, :binary}]
 
-  Example:
-  {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = :httpc.request(:get, request, [], [])
+      Example:
+      {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = :httpc.request(:get, request, [], [])
   """
   def request(url) when is_binary(url), do: url |> String.to_charlist |> request
   def request(url) when is_list(url) do

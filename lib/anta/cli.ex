@@ -60,7 +60,7 @@ defmodule Anta.CLI do
   end
 
   @doc """
-  Halts the system if response not :ok
+  Halts the system if response not `:ok`
   """
   def decode_response({ :ok, body }), do: body
   def decode_response({ :error, error }) do
