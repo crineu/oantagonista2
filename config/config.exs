@@ -11,6 +11,7 @@ use Mix.Config
 # You can configure your application as:
 #
 #     config :oantagonista2, key: :value
+  config :oantagonista2, anta_url: 'https://www.oantagonista.com'
 #
 # and access this configuration in your application as:
 #

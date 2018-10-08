@@ -3,7 +3,7 @@ defmodule Anta.Fetcher do
     {'User-agent',   'Elixir dave@pragprog.com'},
     {'Content-type', 'text/html; charset=UTF-8'}
   ]
-  @hostname 'https://www.oantagonista.com/'
+  @hostname Application.get_env(:oantagonista2, :anta_url)
   @options  [{:body_format, :binary}]  # needed for ISO-8859-1 chars!
 
 
@@ -34,14 +34,14 @@ defmodule Anta.Fetcher do
   Returns the url to the news list
   """
   def to_news_list_url(page_number \\ 1) when is_integer(page_number) do
-    @hostname ++ 'pagina/' ++ Integer.to_charlist(page_number)
+    "#{@hostname}/pagina/#{page_number}"
   end
 
   @doc """
   Returns the url of the single news
   """
   def to_singe_news_url(category, unique_name) do
-    @hostname ++ category ++ '/' ++ unique_name
+    "#{@hostname}/#{category}/#{unique_name}"
   end
 
 
@@ -60,7 +60,8 @@ defmodule Anta.Fetcher do
   Example:
   {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = :httpc.request(:get, request, [], [])
   """
-  def request(url) do
+  def request(url) when is_binary(url), do: url |> String.to_charlist |> request
+  def request(url) when is_list(url) do
     :httpc.request(:get, {url, @headers}, [], @options)
   end
 
