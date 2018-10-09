@@ -29,11 +29,22 @@ defmodule Anta.Fetcher do
   """
   def fetch_single_news(path) do
     [category, unique_name] = String.split(path, "/", trim: true)
+    [category, unique_name]
+      |> to_single_news_url
+      |> request
+      |> handle_response
   end
 
 
   @doc """
   Returns the url to the news list
+
+  ## Example
+      iex> Anta.Fetcher.to_news_list_url()
+      "https://www.oantagonista.com/pagina/1"
+
+      iex> Anta.Fetcher.to_news_list_url(8)
+      "https://www.oantagonista.com/pagina/8"
   """
   def to_news_list_url(page_number \\ 1) when is_integer(page_number) do
     "#{@hostname}/pagina/#{page_number}"
@@ -41,8 +52,12 @@ defmodule Anta.Fetcher do
 
   @doc """
   Returns the url of the single news
+
+  ## Example
+      iex> Anta.Fetcher.to_single_news_url(["brasil", "eleicao-2018"])
+      "https://www.oantagonista.com/brasil/eleicao-2018"
   """
-  def to_singe_news_url(category, unique_name) do
+  def to_single_news_url([category, unique_name]) do
     "#{@hostname}/#{category}/#{unique_name}"
   end
 

@@ -1,6 +1,6 @@
 defmodule CliTest do
   use ExUnit.Case
-  doctest Anta.CLI
+  # doctest Anta.CLI
 
   import Anta.CLI, only: [ parse_args: 1 ]
 
@@ -8,7 +8,7 @@ defmodule CliTest do
     assert parse_args(["-h",     "anything"]) == :help
     assert parse_args(["--help", "anything"]) == :help
   end
-  
+
   test "test two values returned if two given" do
     assert parse_args(["10", "7"]) == { 10, 7 }
   end
