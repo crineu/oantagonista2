@@ -27,7 +27,7 @@ defmodule Anta.Parser do
       |> Enum.map(&to_map/1)
   end
 
-  def to_map(article) do
+  defp to_map(article) do
     [path]  = Floki.attribute(article, "div a",           "data-link")
     [title] = Floki.attribute(article, "div a",           "data-title")
     [date]  = Floki.attribute(article, "div a span time", "datetime")
@@ -37,7 +37,8 @@ defmodule Anta.Parser do
       full_path:  path,
       local_path: local_path,
       title:      title,
-      date:       date
+      date:       date,
+      content:    nil
     }
   end
 

@@ -1,22 +1,17 @@
 defmodule Anta.Fetcher do
   require Logger
 
-  @headers [
-    {'User-agent',   'Elixir dave@pragprog.com'},
-    {'Content-type', 'text/html; charset=UTF-8'}
-  ]
-  @hostname Application.get_env(:oantagonista2, :anta_url)
-  @options  [{:body_format, :binary}]  # needed for ISO-8859-1 chars!
-
-
   @moduledoc """
-  Uses erlang :httpc to fetch the html data from the website
+  Uses erlang :httpc to fetch html data from websites
   """
+
+  @hostname Application.get_env(:oantagonista2, :anta_url)
 
   @doc """
   Fetch news page (for now, `news_count` will be ignored...)
   and transforms into a list of news
   """
+  def fetch_news_list(page_number)
   def fetch_news_list({ page_number, _news_count }) do
     page_number
       |> to_news_list_url
@@ -62,13 +57,20 @@ defmodule Anta.Fetcher do
   end
 
 
+  @headers [
+    {'User-agent',   'Elixir dave@pragprog.com'},
+    {'Content-type', 'text/html; charset=UTF-8'}
+  ]
+  @options  [{:body_format, :binary}]  # needed for ISO-8859-1 chars!
   @doc """
   We should start `inets` application - `httpc` is part of it;
   We should start `ssl` also, if we want to make secure requests (https):
+
       Application.ensure_all_started(:inets)
       Application.ensure_all_started(:ssl)
 
   Sample code:
+
       link = 'https://www.oantagonista.com/brasil/primo-de-richa-pede-liberdade-gilmar/'
       request = {link, @headers}
 
@@ -84,11 +86,11 @@ defmodule Anta.Fetcher do
   end
 
 
-  def handle_response({:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}}) do
+  defp handle_response({:ok, {{'HTTP/1.1', 200, 'OK'}, _, body}}) do
     Logger.info "Sucessful response..."
     {:ok, body}
   end
-  def handle_response({:error, {_, _, body}}) do
+  defp handle_response({:error, {_, _, body}}) do
     Logger.error "Network error response..."
     {:error, body}
   end
