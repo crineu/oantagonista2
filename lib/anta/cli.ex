@@ -66,9 +66,9 @@ defmodule Anta.CLI do
     Logger.info "OAntagnoista2 fetching page #{page_number}"
     { page_number, count }
       |> Anta.Fetcher.fetch_news_list
-      |> Anta.CLI.decode_response
+      |> decode_response
       |> Anta.Parser.parse_news_list
-      |> Enum.map(&Anta.CLI.fill_article_with_content/1)
+      |> pmap(&fill_article_with_content/1)
       |> Anta.Formatter.to_screen
   end
 
@@ -83,7 +83,7 @@ defmodule Anta.CLI do
   def fill_article_with_content(article) do
     content = article[:local_path]
       |> Anta.Fetcher.fetch_single_news
-      |> Anta.CLI.decode_response
+      |> decode_response
       |> Anta.Parser.parse_single_news
     Map.put(article, :content, content)
   end
@@ -98,5 +98,11 @@ defmodule Anta.CLI do
     System.stop(0)
   end
 
+  # Parallel map to fetch data simultaneously
+  defp pmap(collection, func) do
+    collection
+    |> Enum.map(&(Task.async(fn -> func.(&1) end)))
+    |> Enum.map(&Task.await/1)
+  end
 
 end
