@@ -7,16 +7,14 @@ defmodule ParserTest do
       full_path:  "https://www.oantagonista.com/brasil/manter-lula-nas-pesquisas-e-estrategia-ou-estelionato/",
       local_path: "/brasil/manter-lula-nas-pesquisas-e-estrategia-ou-estelionato/",
       title:      "Manter Lula nas pesquisas é estratégia ou estelionato?",
-      date:       "2018-06-11 15:08:32",
-      content:       nil
+      date:       "2018-06-11 15:08:32"
     }
 
     sample_2 = %{
       date:       "2018-06-11 14:31:29",
       full_path:  "https://www.oantagonista.com/brasil/o-economista-ruim-de-bola/",
       local_path: "/brasil/o-economista-ruim-de-bola/",
-      title:      "O economista ruim de bola",
-      content:       nil
+      title:      "O economista ruim de bola"
     }
 
 

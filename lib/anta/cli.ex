@@ -15,6 +15,9 @@ defmodule Anta.CLI do
       |> process
   end
 
+  @doc """
+  Method that exposes @default_count (used in tests)
+  """
   def default_count, do: @default_count
 
   @doc """
@@ -50,13 +53,39 @@ defmodule Anta.CLI do
     System.stop(0)
   end
 
+  @doc """
+  _Maestro_ method of the system.
+
+  * Fetches the news list
+  * Decodes the response (halts if invalid)
+  * Parses the news list
+  * Fill each news item with its content
+  * Formats and display on the screen
+  """
   def process({ page_number, count }) do
     Logger.info "OAntagnoista2 fetching page #{page_number}"
     { page_number, count }
       |> Anta.Fetcher.fetch_news_list
-      |> decode_response
+      |> Anta.CLI.decode_response
       |> Anta.Parser.parse_news_list
+      |> Enum.map(&Anta.CLI.fill_article_with_content/1)
       |> Anta.Formatter.to_screen
+  end
+
+  @doc """
+  Fill each article data structure with the content of the individual news
+
+  * Fetches a single news page
+  * Decodes the response (halts if invalid)
+  * Parses the single news ang extracts the content
+  * Update the article map with its content
+  """
+  def fill_article_with_content(article) do
+    content = article[:local_path]
+      |> Anta.Fetcher.fetch_single_news
+      |> Anta.CLI.decode_response
+      |> Anta.Parser.parse_single_news
+    Map.put(article, :content, content)
   end
 
   @doc """

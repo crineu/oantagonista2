@@ -37,8 +37,7 @@ defmodule Anta.Parser do
       full_path:  path,
       local_path: local_path,
       title:      title,
-      date:       date,
-      content:    nil
+      date:       date
     }
   end
 
