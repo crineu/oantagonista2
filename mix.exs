@@ -4,7 +4,7 @@ defmodule Oantagonista2.MixProject do
   def project do
     [
       app:  :oantagonista2,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir:  "~> 1.7",
 
       escript: escript_config(),
